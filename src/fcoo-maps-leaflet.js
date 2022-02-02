@@ -1,9 +1,9 @@
 /****************************************************************************
-	fcoo-maps-leaflet.js,
+	leaflet-bower-bugfix-switches.js,
 
 	(c) 2022, FCOO
 
-	https://github.com/FCOO/fcoo-maps-leaflet
+	https://github.com/FCOO/leaflet-bower-bugfix-switches
 	https://github.com/FCOO
 
 ****************************************************************************/
