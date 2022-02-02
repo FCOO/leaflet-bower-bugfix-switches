@@ -1,12 +1,12 @@
 {
-  "name": "fcoo-maps-leaflet",
-  "version": "1.0.0",
-  "homepage": "https://github.com/FCOO/fcoo-maps-leaflet",
+  "name": "leaflet-bower-bugfix-switches",
+  "version": "1.0.1",
+  "homepage": "https://github.com/FCOO/leaflet-bower-bugfix-switches",
   "author": "Niels Holt nho@fcoo.dk",
   "description": "package.json is only use for building the package. see bower.json for more info",
   "repository": {
     "type": "git",
-    "url": "git://github.com/FCOO/fcoo-maps-leaflet.git"
+    "url": "git://github.com/FCOO/leaflet-bower-bugfix-switches.git"
   },
   "dependencies": {},
   "devDependencies": {

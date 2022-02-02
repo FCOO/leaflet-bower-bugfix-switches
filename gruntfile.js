@@ -1,7 +1,7 @@
 /***********************************************
-gruntfile.js for fcoo-maps-leaflet
+gruntfile.js for leaflet-bower-bugfix-switches
 
-https://github.com/FCOO/fcoo-maps-leaflet
+https://github.com/FCOO/leaflet-bower-bugfix-switches
 
 ***********************************************/
 
