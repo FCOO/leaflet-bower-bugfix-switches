@@ -1,0 +1,46 @@
+{
+  "name": "fcoo-maps-leaflet",
+  "version": "1.0.0",
+  "homepage": "https://github.com/FCOO/fcoo-maps-leaflet",
+  "authors": [
+    "Niels Holt"
+  ],
+  "description": "",
+  "main": [
+    "dist/fcoo-maps-leaflet.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/FCOO/fcoo-maps-leaflet.git"
+  },
+  "dependencies": {
+    "leaflet-global-switches": "fcoo/leaflet-global-switches#^1.0.0",
+    "leaflet": "latest",
+    "leaflet-bugfix": "fcoo/leaflet-bugfix#~3.0.0"
+  },
+  "overrides": {
+    "leaflet": {
+      "main": [
+        "dist/leaflet-src.js",
+        "dist/leaflet.css"
+      ],
+      "dependencies": {
+        "leaflet-global-switches": "latest"
+      }
+    }
+  },
+  "resolutions": {
+    "leaflet": "1.7.1"
+  },
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "moduleType": [
+    "es6"
+  ]
+}
