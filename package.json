@@ -10,7 +10,8 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "grunt-fcoo-grunt-plugin": "^6.0.0"
+    "grunt-fcoo-grunt-plugin": "^6.0.0",
+    "leaflet": "1.8.0"
   },
   "license": "MIT"
 }
