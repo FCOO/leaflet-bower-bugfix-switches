@@ -1,8 +1,7 @@
 # leaflet-bower-bugfix-switches
 >
 
-
-## CURRENT VERSION OF LEAFLET = 1.7.1
+## ARCHIVED - This bug fix is included in Leaflet 1.8.0
 
 ## Description
 Packages to include [Leaflet](https://leafletjs.com/) with specific version, Global Settings, Bower-adjust, bug fix etc.
