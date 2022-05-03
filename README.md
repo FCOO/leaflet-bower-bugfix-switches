@@ -8,7 +8,7 @@ Packages to include [Leaflet](https://leafletjs.com/) with specific version, Glo
 
 - Fix [Leaflet](https://leafletjs.com/) version to **1.8.0**
 
-- Since Leaflet 1.8.0 [don't support Bower](https://github.com/Leaflet/Leaflet/pull/7831) this packages will include all js-files from Leaflet as its own and adjust `bower.json` to include Leaflet and adjust its `main options`  
+- Since Leaflet 1.8.0 [don't support Bower](https://github.com/Leaflet/Leaflet/pull/7831) this packages will include [fcoo/leaflet-bower](https://github.com/FCOO/leaflet-bower) that contains hte original leaflet-files and a `bower.json`
 
 - Sets [Global Switch](https://leafletjs.com/reference.html#global-switches) for [Leaflet](https://leafletjs.com/) using [fcoo/leaflet-global-switch](https://github.com/FCOO/leaflet-global-switch)
 

@@ -26,7 +26,6 @@
         "no-extra-boolean-cast"     : "off",
         "no-shadow-restricted-names": "off",
         "no-prototype-builtins"     : "off"
-    },
-    "ignorePatterns": ["src/00_leaflet-src.js"]
+    }
 }
 
