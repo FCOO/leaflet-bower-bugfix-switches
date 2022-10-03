@@ -1,6 +1,6 @@
 {
   "name": "leaflet-bower-bugfix-switches",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "homepage": "https://github.com/FCOO/leaflet-bower-bugfix-switches",
   "authors": "Niels Holt",
   "description": "",
@@ -13,11 +13,11 @@
   },
   "dependencies": {
     "leaflet-global-switches": "fcoo/leaflet-global-switches#^1.0.0",
-    "leaflet-bower": "fcoo/leaflet-bower#1.8.0",
-    "leaflet": "1.8.0"
+    "leaflet-bower": "fcoo/leaflet-bower#1.9.1",
+    "leaflet": "1.9.1"
   },
   "resolutions": {
-    "leaflet": "1.8.0"
+    "leaflet": "1.9.1"
   },
   "overrides": {
     "leaflet-bower": {

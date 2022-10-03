@@ -1,12 +1,12 @@
 # leaflet-bower-bugfix-switches
 >
 
-## CURRENT VERSION OF LEAFLET = 1.8.0
+## CURRENT VERSION OF LEAFLET = 1.9.1
 
 ## Description
 Packages to include [Leaflet](https://leafletjs.com/) with specific version, Global Settings, Bower-adjust, bug fix etc.
 
-- Fix [Leaflet](https://leafletjs.com/) version to **1.8.0**
+- Fix [Leaflet](https://leafletjs.com/) version to **1.9.1**
 
 - Since Leaflet 1.8.0 [don't support Bower](https://github.com/Leaflet/Leaflet/pull/7831) this packages will include [fcoo/leaflet-bower](https://github.com/FCOO/leaflet-bower) that contains hte original leaflet-files and a `bower.json`
 
