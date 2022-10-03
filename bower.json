@@ -1,6 +1,6 @@
 {
   "name": "leaflet-bower-bugfix-switches",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "homepage": "https://github.com/FCOO/leaflet-bower-bugfix-switches",
   "authors": "Niels Holt",
   "description": "",
@@ -22,15 +22,16 @@
   "overrides": {
     "leaflet-bower": {
       "main": [
-        "dist/leaflet-src.js",
-        "dist/leaflet.css"
+        "dist/leaflet-src.js"
       ],
       "dependencies": {
         "leaflet-global-switches": "latest"
       }
     },
     "leaflet": {
-      "main": [],
+      "main": [
+        "dist/leaflet.css"
+      ],
       "dependencies": {
         "leaflet-bower": "latest"
       }
