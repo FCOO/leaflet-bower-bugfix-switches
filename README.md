@@ -6,7 +6,7 @@
 ## Description
 Packages to include [Leaflet](https://leafletjs.com/) with specific version, Global Settings, Bower-adjust, bug fix etc.
 
-- Fix [Leaflet](https://leafletjs.com/) version to **1.9.2**
+- Fix [Leaflet](https://leafletjs.com/) version to **1.9.3**
 
 - Since Leaflet 1.8.0 [don't support Bower](https://github.com/Leaflet/Leaflet/pull/7831) this packages will include [fcoo/leaflet-bower](https://github.com/FCOO/leaflet-bower) that contains hte original leaflet-files and a `bower.json`
 

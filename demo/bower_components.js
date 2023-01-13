@@ -59,7 +59,7 @@
 
 ;
 /* @preserve
- * Leaflet 1.9.2, a JS library for interactive maps. https://leafletjs.com
+ * Leaflet 1.9.3, a JS library for interactive maps. https://leafletjs.com
  * (c) 2010-2022 Vladimir Agafonkin, (c) 2010-2011 CloudMade
  */
 
@@ -69,7 +69,7 @@
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.leaflet = {}));
 })(this, (function (exports) { 'use strict';
 
-  var version = "1.9.2";
+  var version = "1.9.3";
 
   /*
    * @namespace Util
@@ -458,6 +458,7 @@
   };
 
   function checkDeprecatedMixinEvents(includes) {
+  	/* global L: true */
   	if (typeof L === 'undefined' || !L || !L.Mixin) { return; }
 
   	includes = isArray(includes) ? includes : [includes];
@@ -2226,7 +2227,7 @@
   	}
   	if (!handle[type]) {
   		console.warn('wrong event specified:', type);
-  		return L.Util.falseFn;
+  		return falseFn;
   	}
   	handler = handle[type].bind(this, handler);
   	obj.addEventListener(pEvent[type], handler, false);
@@ -4284,7 +4285,7 @@
 
   		var position = getStyle(container, 'position');
 
-  		if (position !== 'absolute' && position !== 'relative' && position !== 'fixed') {
+  		if (position !== 'absolute' && position !== 'relative' && position !== 'fixed' && position !== 'sticky') {
   			container.style.position = 'relative';
   		}
 
@@ -4715,7 +4716,7 @@
   		// If offset is less than a pixel, ignore.
   		// This prevents unstable projections from getting into
   		// an infinite loop of tiny offsets.
-  		if (offset.round().equals([0, 0])) {
+  		if (Math.abs(offset.x) <= 1 && Math.abs(offset.y) <= 1) {
   			return center;
   		}
 
@@ -5274,13 +5275,7 @@
   			this._map.on('click', this.collapse, this);
 
   			on(container, {
-  				mouseenter: function () {
-  					on(section, 'click', preventDefault);
-  					this.expand();
-  					setTimeout(function () {
-  						off(section, 'click', preventDefault);
-  					});
-  				},
+  				mouseenter: this._expandSafely,
   				mouseleave: this.collapse
   			}, this);
   		}
@@ -5290,8 +5285,18 @@
   		link.title = 'Layers';
   		link.setAttribute('role', 'button');
 
-  		on(link, 'click', preventDefault); // prevent link function
-  		on(link, 'focus', this.expand, this);
+  		on(link, {
+  			keydown: function (e) {
+  				if (e.keyCode === 13) {
+  					this._expandSafely();
+  				}
+  			},
+  			// Certain screen readers intercept the key event and instead send a click event
+  			click: function (e) {
+  				preventDefault(e);
+  				this._expandSafely();
+  			}
+  		}, this);
 
   		if (!collapsed) {
   			this.expand();
@@ -5496,6 +5501,15 @@
   			this.expand();
   		}
   		return this;
+  	},
+
+  	_expandSafely: function () {
+  		var section = this._section;
+  		on(section, 'click', preventDefault);
+  		this.expand();
+  		setTimeout(function () {
+  			off(section, 'click', preventDefault);
+  		});
   	}
 
   });
@@ -9177,7 +9191,7 @@
   	}
 
   	if (!levelsDeep && closed) {
-  		coords.push(coords[0]);
+  		coords.push(coords[0].slice());
   	}
 
   	return coords;
@@ -9790,7 +9804,7 @@
   	},
 
   	initialize: function (options, source) {
-  		if (options && (options instanceof L.LatLng || isArray(options))) {
+  		if (options && (options instanceof LatLng || isArray(options))) {
   			this._latlng = toLatLng(options);
   			setOptions(this, source);
   		} else {
@@ -10343,9 +10357,16 @@
   		setPosition(this._container, pos.add(anchor));
   	},
 
-  	_adjustPan: function (e) {
+  	_adjustPan: function () {
   		if (!this.options.autoPan) { return; }
   		if (this._map._panAnim) { this._map._panAnim.stop(); }
+
+  		// We can endlessly recurse if keepInView is set and the view resets.
+  		// Let's guard against that by exiting early if we're responding to our own autopan.
+  		if (this._autopanning) {
+  			this._autopanning = false;
+  			return;
+  		}
 
   		var map = this._map,
   		    marginBottom = parseInt(getStyle(this._container, 'marginBottom'), 10) || 0,
@@ -10381,9 +10402,14 @@
   		// @event autopanstart: Event
   		// Fired when the map starts autopanning when opening a popup.
   		if (dx || dy) {
+  			// Track that we're autopanning, as this function will be re-ran on moveend
+  			if (this.options.keepInView) {
+  				this._autopanning = true;
+  			}
+
   			map
   			    .fire('autopanstart')
-  			    .panBy([dx, dy], {animate: e && e.type === 'moveend'});
+  			    .panBy([dx, dy]);
   		}
   	},
 
@@ -10497,10 +10523,14 @@
   	// @method openPopup(latlng?: LatLng): this
   	// Opens the bound popup at the specified `latlng` or at the default popup anchor if no `latlng` is passed.
   	openPopup: function (latlng) {
-  		if (this._popup && this._popup._prepareOpen(latlng || this._latlng)) {
-
-  			// open the popup on the map
-  			this._popup.openOn(this._map);
+  		if (this._popup) {
+  			if (!(this instanceof FeatureGroup)) {
+  				this._popup._source = this;
+  			}
+  			if (this._popup._prepareOpen(latlng || this._latlng)) {
+  				// open the popup on the map
+  				this._popup.openOn(this._map);
+  			}
   		}
   		return this;
   	},
@@ -10898,14 +10928,19 @@
   	// @method openTooltip(latlng?: LatLng): this
   	// Opens the bound tooltip at the specified `latlng` or at the default tooltip anchor if no `latlng` is passed.
   	openTooltip: function (latlng) {
-  		if (this._tooltip && this._tooltip._prepareOpen(latlng)) {
-  			// open the tooltip on the map
-  			this._tooltip.openOn(this._map);
+  		if (this._tooltip) {
+  			if (!(this instanceof FeatureGroup)) {
+  				this._tooltip._source = this;
+  			}
+  			if (this._tooltip._prepareOpen(latlng)) {
+  				// open the tooltip on the map
+  				this._tooltip.openOn(this._map);
 
-  			if (this.getElement) {
-  				this._setAriaDescribedByOnLayer(this);
-  			} else if (this.eachLayer) {
-  				this.eachLayer(this._setAriaDescribedByOnLayer, this);
+  				if (this.getElement) {
+  					this._setAriaDescribedByOnLayer(this);
+  				} else if (this.eachLayer) {
+  					this.eachLayer(this._setAriaDescribedByOnLayer, this);
+  				}
   			}
   		}
   		return this;
@@ -14037,10 +14072,15 @@
   					offset = toPoint(offset).multiplyBy(3);
   				}
 
-  				map.panBy(offset);
-
   				if (map.options.maxBounds) {
-  					map.panInsideBounds(map.options.maxBounds);
+  					offset = map._limitOffset(toPoint(offset), map.options.maxBounds);
+  				}
+
+  				if (map.options.worldCopyJump) {
+  					var newLatLng = map.wrapLatLng(map.unproject(map.project(map.getCenter()).add(offset)));
+  					map.panTo(newLatLng);
+  				} else {
+  					map.panBy(offset);
   				}
   			}
   		} else if (key in this._zoomKeys) {
