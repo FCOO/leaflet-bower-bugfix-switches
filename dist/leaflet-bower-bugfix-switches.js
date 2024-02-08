@@ -17,7 +17,7 @@
         var center      = this.getCenter(),
             wrapCenter  = this.wrapLatLng( center );
 
-        if ((center.lng != wrapCenter.lng) || (center.lat != wrapCenter.lat))
+        if ( !center.equals(wrapCenter) )
             this.setView( wrapCenter, this.getZoom(), {animate: false, reset: true, disableViewprereset: true});
     }
     L.Map.addInitHook(function () {
